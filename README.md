@@ -7,6 +7,8 @@ pnpm i @iro/futu
 ```
 
 ```ts
+import {Futu, Long, proto} from '@iro/futu'
+
 const futu = new Futu({
   pbk: process.env.PBK, // RSA 公钥
   prk: process.env.PRK  // RSA 私钥
