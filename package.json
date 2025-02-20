@@ -1,5 +1,5 @@
 {
-  "name": "futu",
+  "name": "@iro/futu",
   "version": "1.0.0",
   "dependencies": {
     "@futu/proto": "workspace:*",
