@@ -1,0 +1,63 @@
+syntax = "proto2";
+
+import "common.proto";
+
+/** 所有通知或推送响应 */
+package notify;
+
+option go_package = "./pb";
+
+/** 事件通知 */
+message Event {
+  message S2C {
+    required common.NotifyType type = 1; //通知类型
+    optional common.GtwEvent event = 2; //事件通息
+    optional common.ProgramStatus programStatus = 3; //程序状态
+    optional common.ConnectStatus connectStatus = 4; //连接状态
+    optional common.QotRight qotRight = 5; //行情权限
+    optional common.APILevel apiLevel = 6; //用户等级，已在2.10版本之后废弃
+    optional common.APIQuota apiQuota = 7; //API 额度
+  }
+  required int32 retType = 1;
+  optional string retMsg = 2;
+  optional int32 errCode = 3;
+  optional S2C s2c = 4;
+}
+
+/** 成交推送 */
+message Deal {
+  message S2C {
+    required common.TrdHeader header = 1; //交易公共参数头
+    required common.OrderFill order = 2; //成交结构
+  }
+  //以下3个字段每条协议都有，注释说明在 InitConnect.proto 中
+  required int32 retType = 1 [default = -400];
+  optional string retMsg = 2;
+  optional int32 errCode = 3;
+
+  optional S2C s2c = 4;
+}
+
+/** 订单推送 */
+message Order {
+  message S2C {
+    required common.TrdHeader header = 1; //交易公共参数头
+    required common.Order order = 2; //订单结构
+  }
+  //以下3个字段每条协议都有，注释说明在 InitConnect.proto 中
+  required int32 retType = 1 [default = -400];
+  optional string retMsg = 2;
+  optional int32 errCode = 3;
+  optional S2C s2c = 4;
+}
+
+/** 实时报价 */
+message BasicQot {
+  message S2C {
+    repeated common.BasicQot basicQotList = 1; //股票基本行情
+  }
+  required int32 retType = 1; //RetType，返回结果
+  optional string retMsg = 2;
+  optional int32 errCode = 3;
+  optional S2C s2c = 4;
+}

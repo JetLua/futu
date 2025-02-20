@@ -1,0 +1,13 @@
+{
+  "name": "@futu/proto",
+  "version": "1.0.0",
+  "module": "index.ts",
+  "type": "module",
+  "dependencies": {
+    "long": "catalog:",
+    "protobufjs": "catalog:"
+  },
+  "scripts": {
+    "proto": "pbjs -t static-module -w es6 -o bundler.js ./__proto__/* && pbts -o bundler.d.ts bundler.js"
+  }
+}

@@ -1,0 +1,70 @@
+syntax = "proto2";
+
+import "common.proto";
+
+package sub;
+
+option go_package = "./pb";
+
+/** 订阅 or 取消订阅请求*/
+message ToggleReq {
+  message C2S {
+    repeated common.Security securityList = 1; //股票数组
+    repeated common.SubType subTypeList = 2; //Qot_Common.SubType，订阅数据类型数组
+    required bool isSubOrUnSub = 3; //true 表示订阅，false 表示反订阅
+    optional bool isRegOrUnRegPush = 4; //是否注册或反注册该连接上面行情的推送，该参数不指定不做注册反注册操作
+    repeated int32 regPushRehabTypeList = 5; //Qot_Common.RehabType，复权类型，注册推送并且是 K 线类型才生效，其他订阅类型忽略该参数，注册 K 线推送时该参数不指定默认前复权
+    optional bool isFirstPush = 6; //注册后如果本地已有数据是否首推一次已存在数据，该参数不指定则默认 true
+    optional bool isUnsubAll = 7; //一键取消当前连接的所有订阅，当被设置为 True 时忽略其他参数。
+    optional bool isSubOrderBookDetail = 8; //订阅摆盘可用，是否订阅摆盘明细，仅支持 SF 行情，该参数不指定则默认 false
+    optional bool extendedTime = 9;  // 是否允许美股盘前盘后数据（仅用于订阅美股的实时 K 线、实时分时、实时逐笔）
+  }
+  required C2S c2s = 1;
+}
+
+/** 订阅 or 取消订阅响应*/
+message ToggleRes {
+  required int32 retType = 1 [default = -400]; //RetType,返回结果
+  optional string retMsg = 2;
+  optional int32 errCode = 3;
+}
+
+/**订阅交易推送请求*/
+message AccReq {
+  message C2S {
+    repeated uint64 accIDList = 1; //要接收推送数据的业务账号列表，全量非增量，即使用者请每次传需要接收推送数据的所有业务账号
+  }
+  required C2S c2s = 1;
+}
+
+/**订阅交易推送响应*/
+message AccRes {
+  message S2C {};
+  required int32 retType = 1 [default = -400]; //RetType,返回结果
+  optional string retMsg = 2;
+  optional int32 errCode = 3;
+  optional S2C s2c = 4;
+}
+
+
+/**获取订阅信息响应*/
+message InfoRes {
+  message S2C {
+    repeated common.ConnSubInfo connSubInfoList = 1; //单条连接订阅信息
+    required int32 totalUsedQuota = 2; //FutuOpenD 已使用的订阅额度
+    required int32 remainQuota = 3; //FutuOpenD 剩余订阅额度
+  }
+  required int32 retType = 1; //RetType，返回结果
+  optional string retMsg = 2;
+  optional int32 errCode = 3;
+  optional S2C s2c = 4;
+}
+
+/**获取订阅信息请求*/
+message InfoReq {
+  message C2S {
+    /**是否返回所有连接的订阅状态,不传或者传 false 只返回当前连接数据*/
+    optional bool isReqAllConn = 1;
+  }
+  required C2S c2s = 1;
+}

@@ -1,0 +1,20 @@
+{
+  "name": "futu",
+  "version": "1.0.0",
+  "dependencies": {
+    "@futu/proto": "workspace:*",
+    "node-rsa": "catalog:"
+  },
+  "scripts": {
+    "proto": "buf generate"
+  },
+  "devDependencies": {
+    "@types/node-rsa": "^1.1.4"
+  },
+  "author": "JetLu",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  }
+}
